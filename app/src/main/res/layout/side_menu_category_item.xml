@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="category"
+            type="com.example.domain.model.category.Category" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="12dp"
+            android:layout_height="120dp"
+            android:background="@drawable/category_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/main_color"
+            android:textSize="18sp"
+            android:text="@{category.name}"
+            app:layout_constraintBottom_toBottomOf="@id/view"
+            app:layout_constraintStart_toEndOf="@id/view"
+            app:layout_constraintTop_toTopOf="@id/view"
+            tools:text="Men's Fashion" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

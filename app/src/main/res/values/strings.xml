@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">E-Commerce</string>
+    <string name="home">Home</string>
+    <string name="categories">Categories</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="what_do_you_search_for">what do you search for?</string>
+    <string name="loading">Loading..</string>
+    <string name="try_again">try again..</string>
+    <string name="oops_something_went_wrong">oops, something went wrong..</string>
+    <string name="view_all">view all</string>
+    <string name="products">Products</string>
+    <string name="full_name">Full Name</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="enter_your_full_name">enter your full name</string>
+    <string name="e_mail_address">E-mail address</string>
+    <string name="enter_your_mail_address">enter your mail address</string>
+    <string name="enter_your_password">enter your password</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="enter_your_phone_number">enter your Phone Number</string>
+    <string name="welcome_back_to_route">Welcome Back To Route</string>
+    <string name="please_sign_in_with_your_mail">please sign in with your mail</string>
+    <string name="forgot_password">forgot password</string>
+    <string name="don_t_have_an_account_create_account">Don\'t have an account? Create account</string>
+    <string name="repassword">Re Password</string>
+    <string name="re_password">Re Password</string>
+    <string name="sign_in">login</string>
+    <string name="no_products_available">Sorry, No products available now</string>
+    <string name="description">Description</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="total_price">Total price</string>
+</resources>

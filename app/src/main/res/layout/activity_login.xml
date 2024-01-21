@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+            <variable
+                name="viewModel"
+                type="com.example.e_commerce.ui.login.LoginViewModel" />
+            <variable
+                name="action"
+                type="com.example.e_commerce.ui.login.LoginContract.Action.Login" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/main_color"
+        tools:context=".ui.login.LoginActivity">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:src="@drawable/logo_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_back_to_route"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/please_sign_in_with_your_mail"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/e_mail_address"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="40dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            Error="@{viewModel.emailError}"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.email}"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="20dp"
+                android:layout_margin="15dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            Error="@{viewModel.passwordError}"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edit_text"
+                android:text="@={viewModel.password}"
+                android:padding="20dp"
+                android:inputType="textPassword"
+                android:layout_marginHorizontal="15dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textColor="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/main_color"
+            android:layout_margin="10dp"
+            app:cornerRadius="12dp"
+            android:onClick="@{()->viewModel.invokeAction(action)}"
+            android:padding="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/don_t_have_an_account_create_account"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:onClick="@{()->viewModel.navigateToRegister()}"
+            android:layout_margin="8dp" />
+    </LinearLayout>
+</layout>

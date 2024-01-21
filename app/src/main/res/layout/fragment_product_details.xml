@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.homeScreen.productDetails.ProductDetailsFragment"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.e_commerce.ui.homeScreen.productDetails.ProductDetailsViewModel" />
+
+        <variable
+            name="product"
+            type="com.example.domain.model.product.Product" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{product.title}"
+            android:textColor="@color/secondary_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="@id/image_slider"
+            app:layout_constraintTop_toBottomOf="@id/image_slider"
+            tools:text="Nike Air Jorden" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="price" />
+        <TextView
+            android:id="@id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{`EGP `+(product.priceAfterDiscount != null? product.priceAfterDiscount: product.price)}"
+            android:textColor="@color/secondary_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/image_slider"
+            app:layout_constraintTop_toBottomOf="@id/image_slider"
+            tools:text="EGP 3500" />
+
+        <LinearLayout
+            android:id="@+id/parent_counter_constraint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintEnd_toEndOf="@id/price"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:background="@drawable/sold_text_background"
+                android:paddingVertical="10dp"
+                android:paddingStart="18dp"
+                android:textColor="@color/secondary_color"
+                android:textSize="18sp"
+                android:text="@{product.sold + ` Sold`}"
+                tools:ignore="RtlSymmetry"
+                tools:text="3,230 Sold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                app:drawableStartCompat="@drawable/emoj"
+                android:text="@{product.ratingsAverage+`(`+product.quantity+`)`}"
+                tools:text="4.7(7,500)"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/counter_constraint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/counter_background"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp"
+                android:weightSum="3">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_minus"
+                    android:onClick="@{()->viewModel.decreaseCount()}"
+                    tools:ignore="NestedWeights" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    setText="@{viewModel.quantity}"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:text="1" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="@{()->viewModel.increaseCount()}"
+                    android:src="@drawable/ic_add" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/description"
+            android:textColor="@color/secondary_color"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/image_slider"
+            app:layout_constraintTop_toBottomOf="@id/parent_counter_constraint" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:minLines="3"
+            android:textSize="18sp"
+            android:text="@{product.description}"
+            app:layout_constraintStart_toStartOf="@id/image_slider"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Nike is a multinational corporation that designs, develops, and sells athletic footwear ,apparel, and accessories......Read More " />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/image_slider"
+            app:layout_constraintStart_toStartOf="@id/image_slider">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_price"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/secondary_color"
+                    android:textSize="20sp"
+                    android:text="@{`EGP `+(product.priceAfterDiscount != null? product.priceAfterDiscount: product.price)}"
+                    tools:text="EGP 3500" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_add_to_cart"
+                android:text="@string/add_to_cart"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

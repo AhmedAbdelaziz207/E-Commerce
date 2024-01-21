@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="product"
+            type="com.example.domain.model.product.Product" />
+        <variable
+            name="view"
+            type="android.view.View" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:background="@drawable/sold_text_background"
+        app:cardElevation="10dp"
+        android:layout_margin="7dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="18dp">
+
+            <ImageView
+                android:id="@+id/image"
+                url="@{product.imageCover}"
+                android:layout_width="200dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/product" />
+
+            <TextView
+                android:id="@id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:minLines="2"
+                android:text="@{product.title}"
+                android:textColor="@color/main_color"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@id/image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                tools:text="Nike Air Jordon
+Nike shoes flexible for wo.. " />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@{`EGP ` +(product.priceAfterDiscount != null ? product.priceAfterDiscount : product.price)}"
+                android:textColor="@color/main_color"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                tools:text="EGP 1,500" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="0dp"
+                android:layout_height=".8dp"
+                android:background="#4F6377"
+                app:layout_constraintBottom_toBottomOf="@id/discount"
+                app:layout_constraintEnd_toEndOf="@id/discount"
+                app:layout_constraintStart_toStartOf="@id/discount"
+                app:layout_constraintTop_toTopOf="@id/discount" />
+
+            <TextView
+                android:id="@+id/discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:text="@{product.price + ` EGP`}"
+                android:textColor="#4F6377"
+                android:textSize="14sp"
+                android:visibility="@{product.priceAfterDiscount == null?view.GONE:view.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/price"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                tools:text="200 EGP " />
+
+            <TextView
+                android:id="@+id/review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@{`Review(`+product.ratingsAverage+`)`}"
+                android:textColor="@color/main_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/price"
+                tools:text="Review(4.5)"
+                app:drawableStartCompat="@drawable/emoj"
+                android:drawablePadding="6dp"
+                />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
