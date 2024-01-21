@@ -1,12 +1,10 @@
 package com.example.data
 
-import android.util.Log
 import com.example.data.model.baseResponse.BaseResponse
 import com.example.domain.common.ResultWrapper
 import com.example.domain.exception.ServerException
 import com.google.gson.Gson
 import retrofit2.HttpException
-import java.io.IOException
 
 suspend fun<T> safeApiCall(apiCall:suspend ()->T):ResultWrapper<T>{
    try {
