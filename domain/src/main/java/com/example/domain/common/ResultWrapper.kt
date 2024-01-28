@@ -13,7 +13,7 @@ sealed class ResultWrapper<out T> {
 
     class ServerError<T>(val exception: ServerException) : ResultWrapper<T>()
 
-    object Loading : ResultWrapper<Nothing>()
+    data object Loading : ResultWrapper<Nothing>()
 
 
 }

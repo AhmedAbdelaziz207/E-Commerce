@@ -36,8 +36,7 @@ class HomeFragmentViewModel @Inject constructor(
     private fun loadProducts() {
         viewModelScope.launch {
 
-            val resultWrapper = productsUseCase.getSpecificProducts("Electronics")
-            when(resultWrapper){
+            when(val resultWrapper = productsUseCase.getSpecificProducts("Electronics")){
                 is ResultWrapper.Success->{
                     _state.postValue(HomeCategoriesContract.State.ProductsSuccessState(resultWrapper.data))
                 }
@@ -70,6 +69,12 @@ class HomeFragmentViewModel @Inject constructor(
             }
 
         }
+    }
+
+    fun navigateToCategories(){
+        _event.postValue(
+            HomeCategoriesContract.Event.NavigateToCategoriesScreen
+        )
     }
 
 }

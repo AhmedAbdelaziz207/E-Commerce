@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.homeScreen.HomeScreen">
 
@@ -12,16 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             >
 
             <ImageView
+                android:id="@+id/app_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="fill_vertical|end"
@@ -33,6 +36,8 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/appbar_search"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -55,11 +60,10 @@
         android:layout_height="0dp"
         android:layout_marginBottom="80dp"
         android:background="@color/white"
-
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar"
         app:navGraph="@navigation/home_nav_graph"
-        app:defaultNavHost="true"
 
         />
 
@@ -70,9 +74,9 @@
         android:layout_height="wrap_content"
         android:background="@color/main_color"
         app:itemIconSize="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:itemIconTint="@color/navbar_item_color"
         app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

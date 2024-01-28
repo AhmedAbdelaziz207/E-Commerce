@@ -42,6 +42,10 @@ class HomeFragment : Fragment() {
     private lateinit var homeCategoriesAdapter: HomeCategoriesAdapter
     private lateinit var homeProductsAdapter: HomeProductsAdapter
     private fun initViews() {
+        viewBinding.viewModel = this.viewModel
+        viewBinding.lifecycleOwner = this
+
+
         homeCategoriesAdapter = HomeCategoriesAdapter()
         viewBinding.homeCategoriesRecycler.adapter = homeCategoriesAdapter
         viewBinding.homeCategoriesRecycler.layoutManager =
@@ -56,21 +60,17 @@ class HomeFragment : Fragment() {
 
         homeCategoriesAdapter.onCategoryClickListener =
             HomeCategoriesAdapter.OnItemClickListener { category, _ ->
-                val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(category!!)
-                findNavController().navigate(action)
+                viewModel.event.postValue(
+                    HomeCategoriesContract.Event.NavigateToProductsScreen(category!!)
+                )
             }
 
         homeProductsAdapter.onHomeProductClickListener =
             HomeProductsAdapter.OnHomeProductClickListener { product ->
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(product)
-                findNavController().navigate(action)
+                viewModel.event.postValue(
+                    HomeCategoriesContract.Event.NavigateToProductDetails(product)
+                )
             }
-
-        viewBinding.viewAllTxt.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToCategoriesFragment()
-            findNavController().navigate(action)
-        }
 
         setImageListToSlider()
     }
@@ -133,12 +133,35 @@ class HomeFragment : Fragment() {
 
     private fun handleEvents(event: HomeCategoriesContract.Event) {
         when (event) {
-            is HomeCategoriesContract.Event.NavigateToAllCategories -> {
+            is HomeCategoriesContract.Event.NavigateToCategoriesScreen -> {
+                navigateToCategories()
             }
 
-            is HomeCategoriesContract.Event.NavigateToProduct -> {
+            is HomeCategoriesContract.Event.NavigateToProductDetails -> {
+                navigateToProductDetails(event.product)
+            }
+
+            is HomeCategoriesContract.Event.NavigateToProductsScreen -> {
+                navigateToProducts(event.category)
             }
         }
+    }
+
+    private fun navigateToProducts(category: Category) {
+        val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(category!!)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToProductDetails(product: Product) {
+        val action =
+            HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(product)
+        findNavController().navigate(action)
+    }
+
+
+    private fun navigateToCategories() {
+        val action = HomeFragmentDirections.actionHomeFragmentToCategoriesFragment()
+        findNavController().navigate(action)
     }
 
     private lateinit var imageList: MutableList<SlideModel>
