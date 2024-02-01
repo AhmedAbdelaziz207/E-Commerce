@@ -14,6 +14,9 @@
         <variable
             name="product"
             type="com.example.domain.model.product.Product" />
+        <variable
+            name="action"
+            type="com.example.e_commerce.ui.homeScreen.productDetails.ProductDetailsContract.Action.AddProductToCart" />
 
     </data>
 
@@ -139,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="@{()->viewModel.increaseCount()}"
-                    android:src="@drawable/ic_add" />
+                    android:src="@drawable/ic_plus" />
 
             </LinearLayout>
         </LinearLayout>
@@ -172,7 +175,6 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
             android:orientation="horizontal"
             android:weightSum="3"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -212,6 +214,8 @@
                 android:text="@string/add_to_cart"
                 android:textColor="@color/white"
                 android:textSize="18sp"
+                android:onClick="@{()->viewModel.invokeAction(action)}"
+                android:paddingHorizontal="5dp"
                 android:textStyle="bold" />
 
         </LinearLayout>

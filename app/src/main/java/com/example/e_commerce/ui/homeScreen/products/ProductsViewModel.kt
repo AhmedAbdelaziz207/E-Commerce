@@ -12,32 +12,32 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val productsUseCase: GetProductsUseCase
-) : ViewModel() ,ProductDetailsContract.ViewModel{
-    private var _event = MutableLiveData<ProductDetailsContract.Event>()
-    override val event: MutableLiveData<ProductDetailsContract.Event>
+) : ViewModel() ,ProductsContract.ViewModel{
+    private var _event = MutableLiveData<ProductsContract.Event>()
+    override val event: MutableLiveData<ProductsContract.Event>
         get() = _event
 
-    private var _state = MutableLiveData<ProductDetailsContract.State>()
-    override val state: MutableLiveData<ProductDetailsContract.State>
+    private var _state = MutableLiveData<ProductsContract.State>()
+    override val state: MutableLiveData<ProductsContract.State>
         get() = _state
 
 
 
-    override fun invokeAction(action: ProductDetailsContract.Action) {
+    override fun invokeAction(action: ProductsContract.Action) {
             when(action){
-                is ProductDetailsContract.Action.LoadProducts -> loadProducts(action.categoryName)
+                is ProductsContract.Action.LoadProducts -> loadProducts(action.categoryName)
             }
         }
 
     private fun loadProducts(categoryName: String) {
         viewModelScope.launch {
-            _state.postValue(ProductDetailsContract.State.LoadingState("Loading.."))
+            _state.postValue(ProductsContract.State.LoadingState("Loading.."))
             when(val resultWrapper = productsUseCase.getSpecificProducts(categoryName)){
                 is ResultWrapper.Success->{
-                    _state.postValue(ProductDetailsContract.State.SuccessState(resultWrapper.data))
+                    _state.postValue(ProductsContract.State.SuccessState(resultWrapper.data))
                 }
                 is ResultWrapper.Error->{
-                    _state.postValue(ProductDetailsContract.State.FailedState(resultWrapper.exception.localizedMessage?:""))
+                    _state.postValue(ProductsContract.State.FailedState(resultWrapper.exception.localizedMessage?:""))
                 }
 
                 else -> {}

@@ -14,16 +14,15 @@ sealed class ProductDetailsContract {
     }
 
     sealed class Action {
-        class AddToCart(val product: Product) : Action()
+        class AddProductToCart(val product: Product) : Action()
     }
 
     sealed class Event {
-
+        data object NavigateToCartScreen:Event()
     }
 
     sealed class State {
-        class SuccessState(val product: Product) : State()
-        class FailedState(val message: String) : State()
-        class LoadingState(val message: String) : State()
+
+        class FailedToAddProductToCart(val message: String):State()
     }
 }

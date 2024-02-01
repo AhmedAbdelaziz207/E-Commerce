@@ -16,7 +16,7 @@ suspend fun<T> safeApiCall(apiCall:suspend ()->T):ResultWrapper<T>{
              return ResultWrapper.ServerError(ServerException(ex.message?:""))
          }
           is HttpException->{
-              val errorBody = ex.response()?.errorBody().toString()
+              val errorBody = ex.response()?.errorBody()?.string()
               val response = Gson().fromJson(errorBody,BaseResponse::class.java)
               return ResultWrapper.ServerError(ServerException(response.message.toString()))
           }

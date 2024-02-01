@@ -36,7 +36,7 @@ class ProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         productsCategory = args.category
 
-        viewModel.invokeAction(ProductDetailsContract.Action.LoadProducts(categoryName = productsCategory?.name!!))
+        viewModel.invokeAction(ProductsContract.Action.LoadProducts(categoryName = productsCategory?.name!!))
         initViews()
     }
 
@@ -63,17 +63,17 @@ class ProductsFragment : Fragment() {
 
     }
 
-    private fun handleStates(state: ProductDetailsContract.State) {
+    private fun handleStates(state: ProductsContract.State) {
         when (state) {
-            is ProductDetailsContract.State.SuccessState -> {
+            is ProductsContract.State.SuccessState -> {
                 handleSuccess(state.products)
             }
 
-            is ProductDetailsContract.State.FailedState -> {
+            is ProductsContract.State.FailedState -> {
                 handleFailed()
             }
 
-            is ProductDetailsContract.State.LoadingState -> {
+            is ProductsContract.State.LoadingState -> {
                 handleLoading()
             }
         }
@@ -86,7 +86,7 @@ class ProductsFragment : Fragment() {
         viewBinding.failedView.isVisible = true
 
         viewBinding.tryAgainBtn.setOnClickListener {
-            viewModel.invokeAction(ProductDetailsContract.Action.LoadProducts(productsCategory?.name!!))
+            viewModel.invokeAction(ProductsContract.Action.LoadProducts(productsCategory?.name!!))
         }
 
     }

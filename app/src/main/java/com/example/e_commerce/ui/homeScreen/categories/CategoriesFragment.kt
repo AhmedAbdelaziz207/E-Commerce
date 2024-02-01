@@ -50,31 +50,30 @@ class CategoriesFragment : Fragment() {
 
         categoriesAdapter.onCategoryClickListener =
             CategoriesAdapter.OnItemClickListener { category, _ ->
-                val action = CategoriesFragmentDirections.actionCategoriesFragmentToProductsFragment(category!!)
-                findNavController().navigate(action)
-            // onCategoryClickListener.onCategoryClick(category)
+
+                viewModel.event.postValue(
+                    CategoriesContract.Event.NavigateToProductScreen(
+                        category!!
+                    )
+                )
+
+
+                // onCategoryClickListener.onCategoryClick(category)
             }
 
         sideMenuCategoriesAdapter.onCategoryClickListener =
-            SideMenuCategoriesAdapter.OnItemClickListener{category, _ ->
-                val action = CategoriesFragmentDirections.actionCategoriesFragmentToProductsFragment(category!!)
-                findNavController().navigate(action)
+            SideMenuCategoriesAdapter.OnItemClickListener { category, _ ->
+                viewModel.event.postValue(
+                    CategoriesContract.Event.NavigateToProductScreen(
+                        category!!
+                    )
+                )
+
 //                onSideMenuCategoryClickListener.onCategoryClick(category)
             }
 
-            setImageListToSlider()
+        setImageListToSlider()
     }
-
-    private fun setImageListToSlider() {
-        imageList = mutableListOf()
-        imageList.add(SlideModel(R.drawable.mens_fashion))
-        imageList.add(SlideModel(R.drawable.womens_fashion))
-        viewBinding.imageSlider.startSliding(9000) // with new period
-        viewBinding.imageSlider.startSliding()
-        viewBinding.imageSlider.stopSliding()
-        viewBinding.imageSlider.setImageList(imageList)
-    }
-
 
     private fun observeOnLiveData() {
         viewModel.event.observe(viewLifecycleOwner) { handleEvents(it) }
@@ -95,13 +94,19 @@ class CategoriesFragment : Fragment() {
             is CategoriesContract.State.FailedState -> {
                 showFailedView(states.message)
             }
+
         }
     }
 
     private fun handleEvents(event: CategoriesContract.Event) {
         when (event) {
-            is CategoriesContract.Event.NavigateToCategoriesDetails -> {
+            is CategoriesContract.Event.NavigateToProductScreen -> {
+                val category = event.category
+                val action =
+                    CategoriesFragmentDirections.actionCategoriesFragmentToProductsFragment(category!!)
+                findNavController().navigate(action)
             }
+
         }
     }
 
@@ -124,6 +129,15 @@ class CategoriesFragment : Fragment() {
         viewBinding.failedView.isVisible = false
         viewBinding.successView.isVisible = false
     }
+
+
+    private fun setImageListToSlider() {
+        imageList = mutableListOf()
+        imageList.add(SlideModel(R.drawable.mens_fashion))
+        imageList.add(SlideModel(R.drawable.womens_fashion))
+        viewBinding.imageSlider.setImageList(imageList)
+    }
+
 
     // callback to return to home and change fragment
 //    lateinit var onCategoryClickListener: OnCategoryClickListener

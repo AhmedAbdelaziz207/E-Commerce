@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.product.Product
 
 
-class ProductDetailsContract {
+class ProductsContract {
 
     interface ViewModel{
         val state:MutableLiveData<State>
@@ -15,6 +15,7 @@ class ProductDetailsContract {
 
     sealed class Action{
         class LoadProducts(val categoryName:String): Action()
+
     }
     sealed class State{
         class SuccessState(val products:List<Product?>?):State()
