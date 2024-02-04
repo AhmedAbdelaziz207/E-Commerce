@@ -19,4 +19,8 @@ class CartDataSourceImp @Inject constructor(
     override suspend fun addToCart(token: String, request: AddToCartRequest): ResultWrapper<CartResponse> {
         return safeApiCall { webServices.addToCart(token,  request).toCartResponse() }
     }
+
+    override suspend fun removeProductFromCart(token: String, productId: String): ResultWrapper<LoggedCartResponse> {
+        return safeApiCall {  webServices.deleteProductFromCart(token,productId)}
+    }
 }

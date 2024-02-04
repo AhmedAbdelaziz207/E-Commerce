@@ -18,4 +18,8 @@ class CartRepositoryImp@Inject constructor(
     override suspend fun addToCart(token: String, request: AddToCartRequest) : ResultWrapper<CartResponse>{
       return dataSourceImp.addToCart(token, request)
     }
+
+    override suspend fun removeProductFromCart(token: String, productId: String): ResultWrapper<LoggedCartResponse> {
+        return dataSourceImp.removeProductFromCart(token,productId)
+    }
 }

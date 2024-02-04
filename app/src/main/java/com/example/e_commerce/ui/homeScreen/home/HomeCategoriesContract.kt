@@ -3,11 +3,12 @@ package com.example.e_commerce.ui.homeScreen.home
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.category.Category
 import com.example.domain.model.product.Product
+import com.example.e_commerce.ui.utils.SingleLiveData
 
 class HomeCategoriesContract {
     interface ViewModel {
-        val state: MutableLiveData<State>
-        val event: MutableLiveData<Event>
+        val state: SingleLiveData<State>
+        val event: SingleLiveData<Event>
         fun invokeAction(action: Action)
     }
 

@@ -1,16 +1,20 @@
 package com.example.data.api
 
 import com.example.data.model.auth.AuthResponseDto
+import com.example.data.model.baseResponse.BaseResponseDto
 import com.example.data.model.cart.CartResponseDto
 import com.example.data.model.category.CategoryResponse
 import com.example.data.model.product.ProductResponse
+import com.example.data.model.wishlist.WishlistResponseDto
 import com.example.domain.model.auth.User
 import com.example.domain.model.cart.addToCart.AddToCartRequest
 import com.example.domain.model.cart.loggedCart.LoggedCartResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Header
+import retrofit2.http.Path
 
 interface WebServices {
     @GET(APIConstants.CATEGORIES_API)
@@ -36,5 +40,21 @@ interface WebServices {
         @Header("token") token: String,
     ): LoggedCartResponse
 
+    @DELETE("/api/v1/cart/{productId}")
+    suspend fun deleteProductFromCart(
+        @Header("token") token: String,
+        @Path("productId") productId : String
+    ):LoggedCartResponse
+
+    @GET(APIConstants.WISHLIST_API)
+    fun getLoggedUserWishlist(
+        @Header("token") token: String
+    ):WishlistResponseDto
+
+    @DELETE("/api/v1/wishlist{productId}")
+    suspend fun deleteProductFromWishlist(
+        @Header("token") token: String,
+        @Path("productId") productId : String
+    ):BaseResponseDto
 
 }

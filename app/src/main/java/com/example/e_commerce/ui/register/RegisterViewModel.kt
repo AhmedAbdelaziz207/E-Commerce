@@ -3,7 +3,7 @@ package com.example.e_commerce.ui.register
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.model.baseResponse.BaseResponse
+import com.example.data.model.baseResponse.BaseResponseDto
 import com.example.domain.model.auth.User
 import com.example.domain.usecases.auth.RegisterUseCase
 import com.google.gson.Gson
@@ -104,7 +104,7 @@ class RegisterViewModel @Inject constructor(
                 } catch (ex: HttpException) {
 
                     val errorBody = ex.response()?.errorBody()?.string()
-                        val response = Gson().fromJson(errorBody, BaseResponse::class.java)
+                        val response = Gson().fromJson(errorBody, BaseResponseDto::class.java)
                         _state.value =
                             RegisterContract.State.FailedState(response.errors?.msg ?:response.message?: "something went wrong")
 

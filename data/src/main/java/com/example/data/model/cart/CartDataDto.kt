@@ -6,7 +6,7 @@ import com.example.domain.model.cart.addToCart.Data
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
-data class DataDto(
+data class CartDataDto(
 
 	@field:SerializedName("cartOwner")
 	val cartOwner: String? = null,

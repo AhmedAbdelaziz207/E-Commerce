@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class CartResponseDto(
 
 	@field:SerializedName("data")
-	val data: DataDto? = null,
+	val data: CartDataDto? = null,
 
 	@field:SerializedName("numOfCartItems")
 	val numOfCartItems: Int? = null

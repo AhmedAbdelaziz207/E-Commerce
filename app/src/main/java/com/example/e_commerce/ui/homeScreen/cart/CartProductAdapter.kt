@@ -19,9 +19,10 @@ class CartProductAdapter(var products: List<ProductsItem?>? = null) :
 
     override fun onBindViewHolder(holder: CartProductViewHolder, position: Int) {
         val product = products!![position]
+        val productId = product?.product?.id
         holder.bind(product)
         holder.viewBinding.delete.setOnClickListener{
-            onCartProductDeleteClickListener.onProductClick(productId = product?.id?:"")
+            onCartProductDeleteClickListener.onProductClick(productId = productId?:"")
         }
     }
 
