@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -57,7 +58,10 @@ class HomeScreen : AppCompatActivity() {
 
 
     }
-
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.fragment_container)
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.app_bar_menu, menu)
@@ -66,15 +70,9 @@ class HomeScreen : AppCompatActivity() {
 
 
     private fun initViews() {
-    viewBinding.appCart.setOnClickListener{
-        navigateToCartPage()
-    }
-
-
-
-
-
-
+        viewBinding.appCart.setOnClickListener {
+            navigateToCartPage()
+        }
 
 
 //        categoriesFragment.onCategoryClickListener =
@@ -104,7 +102,7 @@ class HomeScreen : AppCompatActivity() {
     private fun navigateToCartPage() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container,CartFragment())
+            .replace(R.id.fragment_container, CartFragment())
             .commit()
     }
 

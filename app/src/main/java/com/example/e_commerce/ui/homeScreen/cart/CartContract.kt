@@ -5,12 +5,13 @@ import com.example.domain.model.cart.addToCart.CartProduct
 import com.example.domain.model.cart.addToCart.CartResponse
 import com.example.domain.model.cart.loggedCart.LoggedCartResponse
 import com.example.domain.model.product.Product
+import com.example.e_commerce.ui.utils.SingleLiveData
 
 sealed class CartContract {
 
     interface ViewModel {
-        val state: MutableLiveData<State>
-        val event: MutableLiveData<Event>
+        val state: SingleLiveData<State>
+        val event: SingleLiveData<Event>
 
         fun invokeAction(action: Action)
     }
@@ -18,7 +19,7 @@ sealed class CartContract {
     sealed class Action {
         class Checkout(val products:List<Product>):Action()
         data object LoadCartProducts:Action()
-        class DeleteCartProduct(val cartProduct: String):Action()
+        class DeleteCartProduct(val productId: String):Action()
     }
 
     sealed class Event {

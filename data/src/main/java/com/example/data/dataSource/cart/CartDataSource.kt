@@ -10,4 +10,6 @@ interface CartDataSource {
     suspend fun getLoggedCart(token: String):ResultWrapper<LoggedCartResponse>
 
     suspend fun addToCart(token:String , request: AddToCartRequest):ResultWrapper<CartResponse>
+
+    suspend fun removeProductFromCart(token: String,productId:String):ResultWrapper<LoggedCartResponse>
 }

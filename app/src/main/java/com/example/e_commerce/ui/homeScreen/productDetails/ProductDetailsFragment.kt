@@ -40,7 +40,7 @@ class ProductDetailsFragment : Fragment() {
         this.product = args.product
 
         viewModel.product = this.product
-       viewModel.token = TokenManager(requireContext()).getToken()
+        viewModel.token = TokenManager(requireContext()).getToken()
 
         viewBinding.product = product
         viewBinding.lifecycleOwner = this
@@ -90,6 +90,7 @@ class ProductDetailsFragment : Fragment() {
 
         viewBinding.imageSlider.setImageList(imageList)
     }
+
 
 //
 //    companion object {

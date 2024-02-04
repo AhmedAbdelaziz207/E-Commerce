@@ -62,7 +62,9 @@
             app:argType="com.example.domain.model.product.Product" />
         <action
             android:id="@+id/action_productDetailsFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
+            app:destination="@id/cartFragment"
+            app:popUpTo="@id/productDetailsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"

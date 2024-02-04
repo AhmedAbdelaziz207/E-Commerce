@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.common.ResultWrapper
 import com.example.domain.usecases.category.GetCategoriesUseCase
 import com.example.domain.usecases.product.GetProductsUseCase
+import com.example.e_commerce.ui.utils.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,11 +15,11 @@ class HomeFragmentViewModel @Inject constructor(
     private val  categoriesUseCase: GetCategoriesUseCase,
     private val productsUseCase: GetProductsUseCase
 ):ViewModel(),HomeCategoriesContract.ViewModel {
-    private val _event = MutableLiveData<HomeCategoriesContract.Event>()
-    override val event: MutableLiveData<HomeCategoriesContract.Event>
+    private val _event = SingleLiveData<HomeCategoriesContract.Event>()
+    override val event: SingleLiveData<HomeCategoriesContract.Event>
         get() = _event
-    private val _state = MutableLiveData<HomeCategoriesContract.State>()
-    override val state: MutableLiveData<HomeCategoriesContract.State>
+    private val _state = SingleLiveData<HomeCategoriesContract.State>()
+    override val state: SingleLiveData<HomeCategoriesContract.State>
         get() =_state
 
     override fun invokeAction(action: HomeCategoriesContract.Action) {
