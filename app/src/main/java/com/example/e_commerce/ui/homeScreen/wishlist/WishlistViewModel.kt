@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.common.ResultWrapper
 import com.example.domain.usecases.wishlist.DeleteProductFromWishlistUseCase
 import com.example.domain.usecases.wishlist.GetLoggedUserWishlistUseCase
-import com.example.e_commerce.ui.utils.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
