@@ -47,7 +47,7 @@ interface WebServices {
     ):LoggedCartResponse
 
     @GET(APIConstants.WISHLIST_API)
-    fun getLoggedUserWishlist(
+    suspend fun getLoggedUserWishlist(
         @Header("token") token: String
     ):WishlistResponseDto
 

@@ -1,60 +1,103 @@
 package com.example.e_commerce.ui.homeScreen.wishlist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.e_commerce.R
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
+import com.example.domain.model.product.Product
+import com.example.e_commerce.databinding.FragmentWishlistBinding
+import com.example.e_commerce.ui.TokenManager
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
 
-/**
- * A simple [Fragment] subclass.
- * Use the [WishlistFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WishlistFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val viewBinding: FragmentWishlistBinding by lazy {
+        FragmentWishlistBinding.inflate(layoutInflater)
     }
+    private lateinit var viewModel: WishlistViewModel
+    private val wishlistAdapter: WishlistProductsAdapter by lazy {
+        WishlistProductsAdapter(null)
+    }
+    lateinit var token :String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wishlist, container, false)
+    ): View {
+        return viewBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WishlistFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WishlistFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[WishlistViewModel::class.java]
+        initViews()
+    }
+
+    private fun initViews() {
+        viewBinding.wishlistRecyclerview.adapter = wishlistAdapter
+        token = TokenManager(requireContext()).getToken()!!
+
+        viewModel.invokeAction(WishlistContract.Action.GetLoggedUserWishlist(token))
+        observeOnLiveData()
+
+        Log.e("WishlistToken", token.toString())
+    }
+
+    private fun observeOnLiveData() {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            renderStates(state)
+        }
+    }
+
+    private fun renderStates(state: WishlistContract.State) {
+        when (state) {
+            is WishlistContract.State.FailedState -> {
+                Log.e("Wishlist", "Failed" )
+                handelFailed(state.message)
             }
+
+            WishlistContract.State.LoadingState -> {
+                Log.e("Wishlist", "Loading" )
+                handelLoading()
+            }
+
+            is WishlistContract.State.SuccessState -> {
+                Log.e("Wishlist", "Success" )
+
+                handelSuccess(state.products)
+            }
+        }
+    }
+
+    private fun handelSuccess(products: List<Product?>?) {
+        viewBinding.loadingView.isVisible = false
+        viewBinding.failedView.isVisible = false
+        viewBinding.successView.isVisible = true
+        wishlistAdapter.setData(products)
+    }
+
+    private fun handelLoading() {
+        viewBinding.loadingView.isVisible = true
+        viewBinding.failedView.isVisible = false
+        viewBinding.successView.isVisible = false
+    }
+
+    private fun handelFailed(message: String?) {
+        viewBinding.loadingView.isVisible = false
+        viewBinding.failedView.isVisible = true
+        viewBinding.successView.isVisible = false
+
+        viewBinding.errorMessage.text = message
+
+        viewBinding.tryAgainBtn.setOnClickListener {
+            viewModel.invokeAction(WishlistContract.Action.GetLoggedUserWishlist(token!!))
+        }
     }
 }
+
