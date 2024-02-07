@@ -25,8 +25,11 @@ class WishlistProductsAdapter(var products:List<Product?>?):RecyclerView.Adapter
     override fun onBindViewHolder(holder: WishlistProductsViewHolder, position: Int) {
         val product = products!![position]
         holder.bind(product)
-        holder.viewBinding.delete.setOnClickListener{
+        holder.viewBinding.removeFromWishlist.setOnClickListener{
             onRemoveFromWishlistClickListener.onProductClick(product)
+        }
+        holder.viewBinding.addToCart.setOnClickListener{
+            onAddToCartClickListener.onProductClick(product)
         }
     }
 
@@ -41,6 +44,7 @@ class WishlistProductsAdapter(var products:List<Product?>?):RecyclerView.Adapter
     }
 
     lateinit var onRemoveFromWishlistClickListener: OnProductClickListener
+    lateinit var onAddToCartClickListener: OnProductClickListener
     fun interface OnProductClickListener{
         fun onProductClick(product: Product?)
     }

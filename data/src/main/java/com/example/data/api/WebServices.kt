@@ -9,6 +9,7 @@ import com.example.data.model.wishlist.WishlistResponseDto
 import com.example.domain.model.auth.User
 import com.example.domain.model.cart.addToCart.AddToCartRequest
 import com.example.domain.model.cart.loggedCart.LoggedCartResponse
+import com.example.domain.model.wishlist.AddProductToWishlistRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -51,10 +52,14 @@ interface WebServices {
         @Header("token") token: String
     ):WishlistResponseDto
 
-    @DELETE("/api/v1/wishlist{productId}")
+    @DELETE("/api/v1/wishlist/{productId}")
     suspend fun deleteProductFromWishlist(
         @Header("token") token: String,
         @Path("productId") productId : String
     ):BaseResponseDto
-
+    @POST(APIConstants.WISHLIST_API)
+    suspend fun addProductToWishlist(
+        @Header("token") token: String,
+        @Body request: AddProductToWishlistRequest
+    ):BaseResponseDto
 }

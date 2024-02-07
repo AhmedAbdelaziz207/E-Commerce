@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.domain.model.product.Product
@@ -14,16 +15,18 @@ import com.example.e_commerce.ui.TokenManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-
 class WishlistFragment : Fragment() {
     private val viewBinding: FragmentWishlistBinding by lazy {
         FragmentWishlistBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: WishlistViewModel
+    private val viewModel: WishlistViewModel by lazy {
+        ViewModelProvider(this)[WishlistViewModel::class.java]
+    }
     private val wishlistAdapter: WishlistProductsAdapter by lazy {
         WishlistProductsAdapter(null)
     }
-    lateinit var token :String
+
+    lateinit var token: String
 
 
     override fun onCreateView(
@@ -35,18 +38,48 @@ class WishlistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[WishlistViewModel::class.java]
-        initViews()
-    }
-
-    private fun initViews() {
-        viewBinding.wishlistRecyclerview.adapter = wishlistAdapter
         token = TokenManager(requireContext()).getToken()!!
 
         viewModel.invokeAction(WishlistContract.Action.GetLoggedUserWishlist(token))
         observeOnLiveData()
 
+        initViews()
+    }
+
+    private fun initViews() {
+        handelWishlistAdapter()
+
+
+
+
         Log.e("WishlistToken", token.toString())
+    }
+
+    private fun handelWishlistAdapter() {
+        viewBinding.wishlistRecyclerview.adapter = wishlistAdapter
+
+        // handel remove from wishlist click
+        wishlistAdapter.onRemoveFromWishlistClickListener =
+            WishlistProductsAdapter.OnProductClickListener { product ->
+                viewModel.invokeAction(
+                    WishlistContract.Action.DeleteProductFromWishlist(
+                        token = token,
+                        productId = product?.id ?: ""
+                    )
+                )
+            }
+
+        // handel transfer product from wishlist to cart \
+
+        wishlistAdapter.onAddToCartClickListener =
+            WishlistProductsAdapter.OnProductClickListener { product ->
+                viewModel.invokeAction(
+                    WishlistContract.Action.TransferProductFromWishlistToCart(
+                        token = token,
+                        productId = product?.id ?: ""
+                    )
+                )
+            }
     }
 
     private fun observeOnLiveData() {
@@ -58,19 +91,43 @@ class WishlistFragment : Fragment() {
     private fun renderStates(state: WishlistContract.State) {
         when (state) {
             is WishlistContract.State.FailedState -> {
-                Log.e("Wishlist", "Failed" )
+                Log.e("Wishlist", "Failed")
                 handelFailed(state.message)
             }
 
             WishlistContract.State.LoadingState -> {
-                Log.e("Wishlist", "Loading" )
+                Log.e("Wishlist", "Loading")
                 handelLoading()
             }
 
             is WishlistContract.State.SuccessState -> {
-                Log.e("Wishlist", "Success" )
+                Log.e("Wishlist", "Success")
 
                 handelSuccess(state.products)
+            }
+
+            WishlistContract.State.ProductAddedToCartFailed -> {
+                Toast.makeText(context, "ProductAddedToCartFailed", Toast.LENGTH_SHORT).show()
+            }
+
+            WishlistContract.State.ProductAddedToCartSuccessfully -> {
+                Toast.makeText(context, "ProductAddedToCartSuccessfully", Toast.LENGTH_SHORT).show()
+
+            }
+
+            WishlistContract.State.ProductRemovedFromWishlistFailed -> {
+                Toast.makeText(context, "ProductRemovedFromWishlistFailed", Toast.LENGTH_SHORT)
+                    .show()
+
+            }
+
+            WishlistContract.State.ProductRemovedFromWishlistSuccessfully -> {
+                Toast.makeText(
+                    context,
+                    "ProductRemovedFromWishlistSuccessfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+
             }
         }
     }
@@ -96,7 +153,7 @@ class WishlistFragment : Fragment() {
         viewBinding.errorMessage.text = message
 
         viewBinding.tryAgainBtn.setOnClickListener {
-            viewModel.invokeAction(WishlistContract.Action.GetLoggedUserWishlist(token!!))
+            viewModel.invokeAction(WishlistContract.Action.GetLoggedUserWishlist(token))
         }
     }
 }

@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="10dp"
-                    tools:listitem="@layout/home_product_item"
+                    tools:listitem="@layout/product_item"
 
                     app:layout_constraintTop_toBottomOf="@id/products_txt" />
             </androidx.constraintlayout.widget.ConstraintLayout>

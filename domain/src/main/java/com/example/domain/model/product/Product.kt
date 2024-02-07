@@ -20,7 +20,8 @@ data class Product(
 	val subcategory: List<ProductSubCategory?>? = null,
 	val category: ProductCategory? = null,
 	val slug: String? = null,
-	val updatedAt: String? = null
+	val updatedAt: String? = null,
+	var inWishlist : Boolean = false
 ):Parcelable {
 	constructor(parcel: Parcel) : this(
 		parcel.readValue(Int::class.java.classLoader) as? Int,
