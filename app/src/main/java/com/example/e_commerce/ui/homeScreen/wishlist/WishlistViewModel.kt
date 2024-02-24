@@ -45,6 +45,7 @@ class WishlistViewModel @Inject constructor(
                     _state.postValue(
                         WishlistContract.State.ProductRemovedFromWishlistSuccessfully
                     )
+                    invokeAction(WishlistContract.Action.DeleteProductFromWishlist(productId, token))
                 }
                 else->{
                     _state.postValue(

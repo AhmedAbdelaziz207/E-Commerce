@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.example.data.provider.SessionProvider
+import com.example.domain.model.auth.User
 import com.example.e_commerce.databinding.ActivityRegisterBinding
 import com.example.e_commerce.ui.TokenManager
 import com.example.e_commerce.ui.homeScreen.HomeScreen
@@ -65,8 +65,8 @@ class RegisterActivity : AppCompatActivity() {
 
             is RegisterContract.State.SuccessState -> {
                 val user = state.authResponse.user
-                SessionProvider.user = user
                 tokenManager.saveToken(state.authResponse.token!!)
+                tokenManager.saveUser(User(name = user?.name, email = user?.email, phone = user?.phone))
                 showSuccessDialog(
                     title = "Sign up Successful",
                     message = "Hello ${user?.name} "

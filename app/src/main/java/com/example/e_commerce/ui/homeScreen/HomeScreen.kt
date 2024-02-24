@@ -54,10 +54,18 @@ class HomeScreen : AppCompatActivity() {
 
             }
 
+            if (destination.id == R.id.profileFragment) {
+                viewBinding.appbar.visibility = View.GONE
+            } else {
+                viewBinding.appbar.visibility = View.VISIBLE
+
+            }
+
         }
 
 
     }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment_container)
         return navController.navigateUp() || super.onSupportNavigateUp()

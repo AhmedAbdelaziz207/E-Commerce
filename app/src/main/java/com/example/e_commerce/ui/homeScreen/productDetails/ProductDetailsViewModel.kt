@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.common.ResultWrapper
 import com.example.domain.model.product.Product
 import com.example.domain.usecases.cart.AddToCartUseCase
+import com.example.e_commerce.ui.utils.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,11 +22,11 @@ class ProductDetailsViewModel @Inject constructor(
     var quantity = MutableLiveData(1)
 
 
-    private val _event = MutableLiveData<ProductDetailsContract.Event>()
-    override val event: MutableLiveData<ProductDetailsContract.Event>
+    private val _event = SingleLiveData<ProductDetailsContract.Event>()
+    override val event: SingleLiveData<ProductDetailsContract.Event>
         get() = _event
-    private val _state = MutableLiveData<ProductDetailsContract.State>()
-    override val state: MutableLiveData<ProductDetailsContract.State>
+    private val _state = SingleLiveData<ProductDetailsContract.State>()
+    override val state: SingleLiveData<ProductDetailsContract.State>
         get() = _state
 
     override fun invokeAction(action: ProductDetailsContract.Action) {

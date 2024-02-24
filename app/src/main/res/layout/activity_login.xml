@@ -21,14 +21,14 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_marginBottom="20sp"
-            android:src="@drawable/logo_white" />
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_back_to_route"
+            android:text="@string/welcome_back"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -116,6 +116,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="@string/don_t_have_an_account_create_account"
             android:textColor="@color/white"
             android:textSize="16sp"
