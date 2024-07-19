@@ -30,4 +30,5 @@
 ## App Samples 
 <img src="https://github.com/AhmedAbdelaziz207/App-s-Assets-/blob/main/Ecommerce/images/Screenshot%202024-07-17%20171131.png" alt="Italian Trulli">
 
-
+<img src="https://github.com/AhmedAbdelaziz207/App-s-Assets-/blob/main/Ecommerce/images/Screenshot%202024-07-17%20171221.png" alt="Italian Trulli">
+<img src="https://github.com/AhmedAbdelaziz207/App-s-Assets-/blob/main/Ecommerce/images/Screenshot%202024-07-17%20171221.png" alt="Italian Trulli">
