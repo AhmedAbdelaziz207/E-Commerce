@@ -26,10 +26,12 @@ class SplashScreen : AppCompatActivity() {
         setContentView(viewBinding.root)
         viewModel = ViewModelProvider(this)[SplashViewModel::class.java]
         tokenManager = TokenManager(this)
+        println("token : "+tokenManager.getToken())
         Handler(Looper.getMainLooper()).postDelayed({
-            viewModel.invokeAction(tokenManager.getToken()!!)
+            val tokenManager = TokenManager(this)
+            tokenManager.saveToken(null)
+            viewModel.invokeAction(tokenManager.getToken())
         }, 2000)
-        println(tokenManager.getToken())
         observeOnLiveData()
     }
 

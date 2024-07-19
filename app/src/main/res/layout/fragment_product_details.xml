@@ -110,7 +110,7 @@
             <LinearLayout
                 android:id="@+id/counter_constraint"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/counter_background"
                 android:orientation="horizontal"
@@ -122,16 +122,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_minus"
                     android:onClick="@{()->viewModel.decreaseCount()}"
+                    android:src="@drawable/ic_minus"
                     tools:ignore="NestedWeights" />
 
                 <TextView
+                    setText="@{viewModel.quantity}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_weight="1"
-                    setText="@{viewModel.quantity}"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"

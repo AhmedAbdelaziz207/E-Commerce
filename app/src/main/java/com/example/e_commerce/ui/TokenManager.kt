@@ -20,6 +20,7 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
    fun getToken():String?{
       return sharedPreferences.getString(Constants.TOKEN,null)
    }
+
     fun saveUser(user: User){
         val editor = sharedPreferences.edit()
         editor.putString(Constants.USER_NAME,user.name).apply()
@@ -34,4 +35,11 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
         return User(name = userName, email = email, phone = phoneNumber)
     }
 
+    fun saveState(state : Boolean){
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("state", state).apply()
+    }
+    fun getState():Boolean{
+        return sharedPreferences.getBoolean("state", false)
+    }
 }

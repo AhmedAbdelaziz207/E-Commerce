@@ -65,7 +65,8 @@ class RegisterActivity : AppCompatActivity() {
 
             is RegisterContract.State.SuccessState -> {
                 val user = state.authResponse.user
-                tokenManager.saveToken(state.authResponse.token!!)
+
+                tokenManager.saveToken(state.authResponse.token!!) // api token
                 tokenManager.saveUser(User(name = user?.name, email = user?.email, phone = user?.phone))
                 showSuccessDialog(
                     title = "Sign up Successful",

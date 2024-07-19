@@ -39,3 +39,5 @@ class HomeFragmentContract {
         data object RemovingProductFromWishlistFailed : State()
     }
 }
+
+

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.domain.model.cart.addToCart.CartProduct
 import com.example.domain.model.cart.loggedCart.ProductsItem
 import com.example.domain.model.product.Product
+import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
 import com.example.e_commerce.ui.TokenManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,10 +49,7 @@ class CartFragment : Fragment() {
         cartAdapter.onCartProductDeleteClickListener = CartProductAdapter.OnCartProductClickListener { productId ->
             deleteProductFromCart(productId)
         }
-
-
         observeOnLiveData()
-
 
     }
 

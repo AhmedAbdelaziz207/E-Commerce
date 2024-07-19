@@ -11,7 +11,7 @@ sealed class ResultWrapper<out T> {
 
     class Error<T>(val exception:Exception) : ResultWrapper<T>()
 
-    class ServerError<T>(val exception: ServerException) : ResultWrapper<T>()
+    open class ServerError<T>(val exception: ServerException) : ResultWrapper<T>()
 
     data object Loading : ResultWrapper<Nothing>()
 
