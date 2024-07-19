@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.example.data.provider.SessionProvider
+import com.example.domain.model.auth.User
 import com.example.e_commerce.databinding.ActivityLoginBinding
 import com.example.e_commerce.ui.TokenManager
 import com.example.e_commerce.ui.homeScreen.HomeScreen
@@ -24,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-
         initViews()
     }
 
@@ -38,42 +37,49 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeOnLiveData() {
-        viewModel.state.observe(this){state->
+        viewModel.state.observe(this) { state ->
             handleStates(state)
         }
-        viewModel.event.observe(this){event->
+        viewModel.event.observe(this) { event ->
             handleEvents(event)
         }
     }
 
     private fun handleEvents(event: LoginContract.Event) {
-        when(event){
+        when (event) {
             LoginContract.Event.NavigateToHome -> navigateToHome()
             LoginContract.Event.NavigateToRegister -> navigateToRegister()
         }
     }
 
 
-
     private fun handleStates(state: LoginContract.State) {
-        when(state){
+        when (state) {
             is LoginContract.State.Failed -> {
                 showErrorDialog(
                     title = "login Failed",
                     message = state.message
-                ){}
+                ) {}
             }
+
             LoginContract.State.Loading -> {
 
             }
+
             is LoginContract.State.Success -> {
                 val response = state.response
                 tokenManager.saveToken(response.token!!)
-                SessionProvider.user = response.user
+                val user = User(
+                    name = response.user?.name,
+                    email = response.user?.email,
+                    phone = response.user?.phone
+                )
+                tokenManager.saveUser(user)
+
                 showSuccessDialog(
                     title = "Login Success",
                     message = "Welcome, ${response.user?.name}"
-                ){
+                ) {
                     // dismiss
                     // navigate to home
                 }
@@ -86,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun navigateToRegister() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)

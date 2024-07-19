@@ -14,6 +14,9 @@
         <variable
             name="product"
             type="com.example.domain.model.product.Product" />
+        <variable
+            name="action"
+            type="com.example.e_commerce.ui.homeScreen.productDetails.ProductDetailsContract.Action.AddProductToCart" />
 
     </data>
 
@@ -107,7 +110,7 @@
             <LinearLayout
                 android:id="@+id/counter_constraint"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/counter_background"
                 android:orientation="horizontal"
@@ -119,16 +122,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_minus"
                     android:onClick="@{()->viewModel.decreaseCount()}"
+                    android:src="@drawable/ic_minus"
                     tools:ignore="NestedWeights" />
 
                 <TextView
+                    setText="@{viewModel.quantity}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_weight="1"
-                    setText="@{viewModel.quantity}"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -139,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="@{()->viewModel.increaseCount()}"
-                    android:src="@drawable/ic_add" />
+                    android:src="@drawable/ic_plus" />
 
             </LinearLayout>
         </LinearLayout>
@@ -160,10 +163,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:maxLines="1"
+            android:maxLines="5"
             android:minLines="3"
             android:textSize="18sp"
-            android:text="@{product.description}"
+            android:text="@{product.description + `...`}"
             app:layout_constraintStart_toStartOf="@id/image_slider"
             app:layout_constraintTop_toBottomOf="@id/description"
             app:layout_constraintEnd_toEndOf="parent"
@@ -172,7 +175,6 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
             android:orientation="horizontal"
             android:weightSum="3"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -208,10 +210,12 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_weight="2"
-                android:drawableEnd="@drawable/ic_add_to_cart"
+                android:drawableEnd="@drawable/ic_added_to_cart"
                 android:text="@string/add_to_cart"
                 android:textColor="@color/white"
                 android:textSize="18sp"
+                android:onClick="@{()->viewModel.invokeAction(action)}"
+                android:paddingHorizontal="5dp"
                 android:textStyle="bold" />
 
         </LinearLayout>

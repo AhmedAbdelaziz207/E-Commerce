@@ -21,7 +21,7 @@
     <string name="password">Password</string>
     <string name="sign_up">Sign up</string>
     <string name="enter_your_phone_number">enter your Phone Number</string>
-    <string name="welcome_back_to_route">Welcome Back To Route</string>
+    <string name="welcome_back">Welcome Back!</string>
     <string name="please_sign_in_with_your_mail">please sign in with your mail</string>
     <string name="forgot_password">forgot password</string>
     <string name="don_t_have_an_account_create_account">Don\'t have an account? Create account</string>
@@ -32,4 +32,10 @@
     <string name="description">Description</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="total_price">Total price</string>
+    <string name="checkout">CheckOut</string>
+    <string name="your_e_mail">Your E-Mail</string>
+    <string name="your_full_name">Your full name</string>
+    <string name="your_mobile_number">Your mobile number</string>
+    <string name="your_address">Your Address</string>
+    <string name="register">Register</string>
 </resources>

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,63 +17,95 @@ import com.example.domain.model.category.Category
 import com.example.domain.model.product.Product
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
+import com.example.e_commerce.ui.TokenManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private lateinit var viewBinding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding: FragmentHomeBinding get() = _binding!!
+
     private lateinit var viewModel: HomeFragmentViewModel
+    private val homeCategoriesAdapter: HomeCategoriesAdapter by lazy {
+        HomeCategoriesAdapter(null)
+    }
+    private val homeProductsAdapter: HomeProductsAdapter by lazy {
+        HomeProductsAdapter(null)
+    }
+
+    lateinit var token: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProvider(this)[HomeFragmentViewModel::class.java]
-        viewBinding = FragmentHomeBinding.inflate(layoutInflater)
-        return viewBinding.root
+        _binding = FragmentHomeBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.invokeAction(HomeCategoriesContract.Action.LoadCategories)
-        viewModel.invokeAction(HomeCategoriesContract.Action.LoadProducts())
+        token = TokenManager(requireContext()).getToken()!!
+        viewModel.invokeAction(HomeFragmentContract.Action.LoadCategories)
+        viewModel.invokeAction(HomeFragmentContract.Action.LoadProducts(token = token))
         observeOnLiveData()
         initViews()
     }
 
-    private lateinit var homeCategoriesAdapter: HomeCategoriesAdapter
-    private lateinit var homeProductsAdapter: HomeProductsAdapter
+
     private fun initViews() {
-        homeCategoriesAdapter = HomeCategoriesAdapter()
-        viewBinding.homeCategoriesRecycler.adapter = homeCategoriesAdapter
-        viewBinding.homeCategoriesRecycler.layoutManager =
+        binding.viewModel = this.viewModel
+        binding.lifecycleOwner = this
+
+        handelAdapters()
+
+        setImageListToSlider()
+    }
+
+    private fun handelAdapters() {
+        binding.homeCategoriesRecycler.adapter = homeCategoriesAdapter
+        binding.homeCategoriesRecycler.layoutManager =
             GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
 
-        homeProductsAdapter = HomeProductsAdapter(null)
-        viewBinding.homeProductsRecycler.adapter = homeProductsAdapter
-        viewBinding.homeProductsRecycler.layoutManager = LinearLayoutManager(
+        binding.homeProductsRecycler.adapter = homeProductsAdapter
+        binding.homeProductsRecycler.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.HORIZONTAL, false
         )
 
         homeCategoriesAdapter.onCategoryClickListener =
             HomeCategoriesAdapter.OnItemClickListener { category, _ ->
-                val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(category!!)
-                findNavController().navigate(action)
+                viewModel.event.postValue(
+                    HomeFragmentContract.Event.NavigateToProductsScreen(category!!)
+                )
             }
 
         homeProductsAdapter.onHomeProductClickListener =
             HomeProductsAdapter.OnHomeProductClickListener { product ->
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(product)
-                findNavController().navigate(action)
+                viewModel.event.postValue(
+                    HomeFragmentContract.Event.NavigateToProductDetails(product)
+                )
             }
 
-        viewBinding.viewAllTxt.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToCategoriesFragment()
-            findNavController().navigate(action)
-        }
+        homeProductsAdapter.onAddOrRemoveProductToWishlistClickListener =
+            HomeProductsAdapter.OnHomeProductClickListener { product ->
+                if (product.inWishlist) {
+                    viewModel.invokeAction(
+                        HomeFragmentContract.Action.RemoveProductFromWishlist(
+                            productId = product.id ?: "", token = token
+                        )
+                    )
+                } else {
+                    viewModel.invokeAction(
+                        HomeFragmentContract.Action.AddProductToWishlist(
+                            token = this.token, productId = product.id ?: ""
+                        )
+                    )
+                }
 
-        setImageListToSlider()
+
+            }
     }
 
     private fun observeOnLiveData() {
@@ -85,25 +118,46 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun renderStates(state: HomeCategoriesContract.State) {
+    private fun renderStates(state: HomeFragmentContract.State) {
         when (state) {
-            is HomeCategoriesContract.State.FailedState -> {
+            is HomeFragmentContract.State.FailedState -> {
                 handleFailed()
             }
 
-            is HomeCategoriesContract.State.LoadingState -> {
+            is HomeFragmentContract.State.LoadingState -> {
                 handleLoading()
             }
 
-            is HomeCategoriesContract.State.CategoriesSuccessState -> {
+            is HomeFragmentContract.State.CategoriesSuccessState -> {
                 handleSuccess(state.categories, null)
             }
 
-            is HomeCategoriesContract.State.ProductsSuccessState -> {
+            is HomeFragmentContract.State.ProductsSuccessState -> {
                 handleSuccess(null, state.products)
             }
 
+            HomeFragmentContract.State.AddingProductToWishlistFailed -> {
+                showToastMessage(message = "Failed To Add Product")
+            }
+
+            HomeFragmentContract.State.ProductAddedToWishlistSuccessfully -> {
+                showToastMessage(message = "Product Added Successfully")
+
+            }
+
+            HomeFragmentContract.State.ProductRemovedFromWishlistSuccessfully -> {
+                showToastMessage(message = "Product Removed Successfully")
+
+            }
+            HomeFragmentContract.State.RemovingProductFromWishlistFailed -> {
+                showToastMessage(message = "Failed To Remove Product")
+            }
         }
+    }
+
+    private fun showToastMessage(message:String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
     }
 
     private fun handleSuccess(categories: List<Category?>?, products: List<Product?>?) {
@@ -112,33 +166,56 @@ class HomeFragment : Fragment() {
             homeCategoriesAdapter.setData(categories)
         } else {
             homeProductsAdapter.setData(products)
-            viewBinding.product = products!![0]
+            binding.product = products!![0]
         }
-        viewBinding.successView.isVisible = true
-        viewBinding.loadingView.isVisible = false
-        viewBinding.failedView.isVisible = false
+        binding.successView.isVisible = true
+        binding.loadingView.isVisible = false
+        binding.failedView.isVisible = false
     }
 
     private fun handleLoading() {
-        viewBinding.successView.isVisible = false
-        viewBinding.loadingView.isVisible = true
-        viewBinding.failedView.isVisible = false
+        binding.successView.isVisible = false
+        binding.loadingView.isVisible = true
+        binding.failedView.isVisible = false
     }
 
     private fun handleFailed() {
-        viewBinding.successView.isVisible = false
-        viewBinding.loadingView.isVisible = false
-        viewBinding.failedView.isVisible = true
+        binding.successView.isVisible = false
+        binding.loadingView.isVisible = false
+        binding.failedView.isVisible = true
     }
 
-    private fun handleEvents(event: HomeCategoriesContract.Event) {
+    private fun handleEvents(event: HomeFragmentContract.Event) {
         when (event) {
-            is HomeCategoriesContract.Event.NavigateToAllCategories -> {
+            is HomeFragmentContract.Event.NavigateToCategoriesScreen -> {
+                navigateToCategories()
             }
 
-            is HomeCategoriesContract.Event.NavigateToProduct -> {
+            is HomeFragmentContract.Event.NavigateToProductDetails -> {
+                navigateToProductDetails(event.product)
+            }
+
+            is HomeFragmentContract.Event.NavigateToProductsScreen -> {
+                navigateToProducts(event.category)
             }
         }
+    }
+
+    private fun navigateToProducts(category: Category) {
+        val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(category)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToProductDetails(product: Product) {
+        val action =
+            HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(product)
+        findNavController().navigate(action)
+    }
+
+
+    private fun navigateToCategories() {
+        val action = HomeFragmentDirections.actionHomeFragmentToCategoriesFragment()
+        findNavController().navigate(action)
     }
 
     private lateinit var imageList: MutableList<SlideModel>
@@ -148,12 +225,13 @@ class HomeFragment : Fragment() {
         imageList.add(SlideModel(R.drawable.mens_fashion))
         imageList.add(SlideModel(R.drawable.womens_fashion))
 
-        viewBinding.imageSlider.setImageList(imageList)
+        binding.imageSlider.setImageList(imageList)
     }
 
-//    lateinit var onCategoryClickListener: OnCategoryClickListener
-//
-//    fun interface OnCategoryClickListener {
-//        fun onCategoryClick(category: Category?)
-//    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding?.unbind()
+        _binding = null
+    }
+
 }

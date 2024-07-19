@@ -15,7 +15,7 @@ class CategoriesContract {
         object LoadCategories : Action()
     }
     sealed class Event {
-        object NavigateToCategoriesDetails : Event()
+        class NavigateToProductScreen (val category: Category): Event()
     }
 
     sealed class State {

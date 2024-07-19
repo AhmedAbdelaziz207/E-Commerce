@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentProfileBinding
 import com.example.e_commerce.ui.TokenManager
 import com.example.e_commerce.ui.login.LoginActivity
@@ -27,10 +26,13 @@ class ProfileFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tokenManager = TokenManager(requireContext())
+
         initViews()
     }
 
     private fun initViews() {
+        viewBinding.user = tokenManager.getUser()
+
         viewBinding.logout.setOnClickListener{
            logout()
         }

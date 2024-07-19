@@ -5,24 +5,37 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.domain.model.product.Product
-import com.example.e_commerce.databinding.HomeProductItemBinding
+import com.example.e_commerce.R
+import com.example.e_commerce.databinding.ProductItemBinding
 
-class ProductsAdapter(private var products : List<Product?>?):RecyclerView.Adapter<ProductsAdapter.HomeProductsViewHolder>(){
+class ProductsAdapter(private var products : List<Product?>?):RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>(){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeProductsViewHolder {
-        val viewBinding = HomeProductItemBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
+        val viewBinding = ProductItemBinding.inflate(
             LayoutInflater.from(parent.context), parent,false
         )
 
-        return HomeProductsViewHolder(viewBinding)
+        return ProductsViewHolder(viewBinding)
     }
-    override fun onBindViewHolder(holder: HomeProductsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
         val product = products!![position]
         holder.bind(product!!)
+
+        if (product.inWishlist){
+            holder.viewBinding.addToWashlist.setImageResource(R.drawable.ic_added_to_wishlist)
+        }else{
+            holder.viewBinding.addToWashlist.setImageResource(R.drawable.ic_add_to_wishlist)
+        }
+
         holder.viewBinding.root.setOnClickListener{
-            onProductClickListener.onProductClick(product)
+            onProductClickListener.onProductClick(product , position)
+        }
+
+        holder.viewBinding.addToWashlist.setOnClickListener{
+            onAddOrRemoveProductToWishlistClickListener.onProductClick(product, position)
         }
     }
+
 
     override fun getItemCount(): Int {
         return products?.size?:0
@@ -34,13 +47,14 @@ class ProductsAdapter(private var products : List<Product?>?):RecyclerView.Adapt
     }
 
 
-    class HomeProductsViewHolder( val viewBinding:HomeProductItemBinding):ViewHolder(viewBinding.root) {
+    class ProductsViewHolder( val viewBinding: ProductItemBinding):ViewHolder(viewBinding.root) {
         fun bind(product: Product) {
             viewBinding.product = product
         }
     }
     lateinit var onProductClickListener: OnProductClickListener
+    lateinit var onAddOrRemoveProductToWishlistClickListener: OnProductClickListener
     fun interface OnProductClickListener{
-        fun onProductClick(product: Product)
+        fun onProductClick(product: Product,position: Int)
     }
 }
