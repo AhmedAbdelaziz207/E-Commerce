@@ -28,4 +28,6 @@
 * Work with Figma for UI
 
 ## App Samples 
+<img src="https://drive.google.com/file/d/1OI-8tBifK4T_U-vzmsGCa-NJbeiXHo88/view?usp=drive_link" alt="Italian Trulli">
+
 
